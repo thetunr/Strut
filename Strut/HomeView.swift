@@ -1,5 +1,5 @@
 //
-//  HomeVIew.swift
+//  HomeView.swift
 //  Strut
 //
 //  Created by Tony Oh on 7/8/24.
@@ -7,12 +7,41 @@
 
 import SwiftUI
 
-struct HomeVIew: View {
+struct HomeView: View {
+    @EnvironmentObject var manager: HealthManager
+    @State private var activeTab: String = "Game"
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TabView(selection: $activeTab) {
+            GameView()
+                .tag("Game")
+                .tabItem {
+                    Image(systemName: "house")
+                }
+                .environmentObject(manager)
+//                .ignoresSafeArea()
+            
+            ContentView()
+                .tag("Content")
+                .tabItem {
+                    Image(systemName: "person.2.fill")
+                }
+            
+            ContentView()
+                .tag("Settings")
+                .tabItem {
+                    Image(systemName: "person.circle.fill")
+                }
+        }
+        .shadow(radius: 3)
+        
+        .onAppear {
+            manager.fetchSteps()
+        }
     }
 }
 
 #Preview {
-    HomeVIew()
+    HomeView()
+        .environmentObject(HealthManager())
 }

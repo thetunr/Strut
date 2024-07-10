@@ -10,9 +10,11 @@ import SwiftData
 
 @main
 struct StrutApp: App {
+    @StateObject var manager = HealthManager()
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Item.self, 
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +27,8 @@ struct StrutApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+                .environmentObject(manager)
         }
         .modelContainer(sharedModelContainer)
     }

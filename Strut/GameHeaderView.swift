@@ -19,9 +19,11 @@ struct GameHeaderView: View {
     var body: some View {
         HStack {
             HStack {
-                Image(systemName: "carrot")
-//                    .fixedSize(horizontal: false, vertical: true)
-//                    .aspectRatio(contentMode: .fit)
+                Image(.fish)
+                    .renderingMode(.template)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 16, height: 16)
                 Spacer()
             }
             .frame(width:75)

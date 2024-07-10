@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct GroupView: View {
+    let group: Group
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Emoji: \(group.emoji)")
+            Text("\(group.name) view")
+            Text("First friend in group is \(group.members[0].name).")
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 #Preview {
-    GroupView()
+    GroupView(
+        group: Group(name: "Group 1", dateCreated: Date(), members: [Friend(user: "username1", name: "friend1", dateJoined: Date.now, dateAdded: Date.now)])
+    )
 }
