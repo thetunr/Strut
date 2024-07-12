@@ -23,101 +23,51 @@ struct GameView: View {
     ]
         
     var body: some View {
-        VStack {
-            GameHeaderView()
-
-            VStack(spacing: 0) {
-                CustomTabBar()
-                
-                Rectangle()
-                    .fill(Color.gray.opacity(0.1))
-                    .frame(height: 5)
-                    .blur(radius: 1)
-            }
+        VStack(spacing:0) {
+            GameHeaderView(activeGroup: $activeGroup, groups: $groups)
             
-            ZStack {
+            // Blur between GameHeaderView & FullView / GroupView
+            Rectangle()
+                .fill(LinearGradient(
+                    gradient: Gradient(colors: [Color(.grey80), Color(.grey87)]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                ))
+                .frame(height: 5)
+            
+            ZStack(alignment: .top) {
                 if (activeGroup == -1) {
                     FullView()
-                        .border(Color.red)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.blue)
-                            .border(Color.pink)
+                        .background(Color(.grey87))
                 }
                 else {
                     GroupView(group: groups[activeGroup])
-                        .border(Color.red)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.blue)
-                            .border(Color.pink)
+                        .background(Color(.grey87))
                 }
                 
-                Rectangle()
-                    .fill(Color.orange)
-                    .frame(width: 50, height: 25)
+                ZStack {
+                    // Container for steps count text
+                    Rectangle()
+                        .foregroundColor(.clear)
+                        .frame(width: 190, height: 44)
+                        .background(Color(.grey98).opacity(0.5))
+                        .cornerRadius(22)
+                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
+                    
+                    // Steps count text
+                    Text("12,543")
+                        .font(.custom("Inter-Regular", size: 32))
+                        .frame(width: 130, height: 32)
+                        .foregroundColor(.black)
+                }
+                .padding(.top, 10) // Move
             }
             
             Spacer()
 
         }
-    }
-    
-    // Move Scrollable TabBar into GameHeaderView while maintaining activeGroup:
-    // ChildView(activeGroup: $activeGroup)
-    // @Binding var activeGroup: Int
-
-    @ViewBuilder
-    func CustomTabBar() -> some View {
-        HStack {
-            ZStack(alignment: .center) {
-                UnevenRoundedRectangle(cornerRadii: .init(bottomTrailing: 20, topTrailing: 20))
-                    .fill(Color(red: 0.71, green: 0.71, blue: 0.71))
-                    .frame(width: 40, height: 30)
-                    .background(Color.clear)
-                
-                Button(action: {
-                    withAnimation(.snappy) {
-                        activeGroup = -1
-                        print("Full")
-                    }
-                    
-                }){
-                    
-                    Image(.usersFull)
-                        .renderingMode(.template) // Ensure the image is rendered as a template
-                        .resizable() // Make the image resizable
-                        .aspectRatio(contentMode: .fit) // Maintain the aspect ratio
-                        .frame(width: 16, height: 16) // Set the desired width and height
-                        .foregroundStyle(activeGroup == -1 ? Color(UIColor.label) : .gray)
-                        .offset(x: -1) // Adjust the offset to center the image towards the right
-                        .background(Color.clear)
-                }
-            }
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 20) {
-                    ForEach(groups.indices, id: \.self) { index in
-                        Button(action: {
-                            withAnimation(.snappy) {
-                                activeGroup = index
-                                print(groups[index].name)
-                            }
-                            
-                        }) {
-                            Text(groups[index].emoji)
-//                            Text(groups[index].name)
-//                                .padding(.vertical, 12)
-//                                .foregroundStyle(activeGroup == index ? Color.primary : .gray)
-//                                .contentShape(.rect)
-                            Text("\(index)")
-                                .padding(.vertical, 12)
-                                .foregroundStyle(activeGroup == index ? Color.primary : .gray)
-                                .contentShape(.rect)
-                        }
-                    }
-                }
-            }
-        }
-//        .padding(.horizontal, 10)
     }
 }
 

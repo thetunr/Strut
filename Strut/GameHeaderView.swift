@@ -8,59 +8,40 @@
 import SwiftUI
 
 struct GameHeaderView: View {
-    @State private var stepCount: Int = 98765
+
+    @Binding var activeGroup: Int
+    @Binding var groups: [Group]
     
-    private var formattedStepCount: String {
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            return numberFormatter.string(from: NSNumber(value: stepCount)) ?? "\(stepCount)"
-        }
-    
+    @State private var progress = 0.7
+
     var body: some View {
-        HStack {
-            HStack {
-                Image(.fish)
+        VStack(spacing: 0) { // Vertically stacking fish bar & GroupScrollBar
+            HStack { // Whole horizontal fish bar
+                Spacer()
+                
+                // Fish icon
+                Image(.fishIcon)
                     .renderingMode(.template)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 16, height: 16)
+                
+                // ProgressView
+                ProgressView(value: progress)
+                    .frame(width: 260)
+                    .tint(Color(.grey71))
+                    .scaleEffect(x: 1, y: 2.5, anchor: .center)
+                
                 Spacer()
             }
-            .frame(width:75)
             
-            Spacer()
-                .frame(height:5)
-                .background(Color.blue)
-            
-            Text(formattedStepCount)
-                .font(.system(size:35))
-                .frame(width:150)
-            
-            Spacer()
-                .frame(height:5)
-                .background(Color.blue)
-            
-            HStack {
-                Spacer()
-                
-                Button("", systemImage: "book.closed") {
-                    // action
-                }
-                
-                Button("", systemImage: "calendar") {
-                    // action
-                }
-            }
-            
-            .frame(width:75)
-            
+            GroupScrollBar(activeGroup: $activeGroup, groups: $groups)
         }
-        .foregroundColor(Color.primary)
-        .frame(height:25)
-        .padding(15)
+        .padding(.top, 8)
+        .background(Color(.grey93))
     }
 }
 
-#Preview {
-    GameHeaderView()
-}
+//#Preview {
+//    GameHeaderView()
+//}

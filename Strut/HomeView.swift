@@ -12,14 +12,21 @@ struct HomeView: View {
     @State private var activeTab: String = "Game"
     
     var body: some View {
+        // TODO: create new TabView for easier customization
         TabView(selection: $activeTab) {
             GameView()
                 .tag("Game")
                 .tabItem {
-                    Image(systemName: "house")
+                    Image(.mapIcon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 8, height: 8)
+//                        .renderin?gMode(.template)
                 }
                 .environmentObject(manager)
-//                .ignoresSafeArea()
+                .onAppear {
+                    manager.fetchSteps()
+                }
             
             ContentView()
                 .tag("Content")
@@ -32,12 +39,17 @@ struct HomeView: View {
                 .tabItem {
                     Image(systemName: "person.circle.fill")
                 }
+            
         }
-        .shadow(radius: 3)
+        // TODO: delete later, temporary solution for color
+        .tint(.pink)
+        .onAppear(perform: {
+            UITabBar.appearance().unselectedItemTintColor = .systemBrown
+            UITabBarItem.appearance().badgeColor = .systemPink
+            UITabBar.appearance().backgroundColor = UIColor(Color(.grey93))
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.systemPink]
+                })
         
-        .onAppear {
-            manager.fetchSteps()
-        }
     }
 }
 
