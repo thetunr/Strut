@@ -21,7 +21,7 @@
 		B8A0FDF32C3C1E6A00C82665 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A0FDF22C3C1E6A00C82665 /* Group.swift */; };
 		B8A0FDF52C3C1E8B00C82665 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A0FDF42C3C1E8B00C82665 /* GameView.swift */; };
 		B8A0FDF72C3C1EAA00C82665 /* GameHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A0FDF62C3C1EAA00C82665 /* GameHeaderView.swift */; };
-		B8A0FDF92C3C1ECF00C82665 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A0FDF82C3C1ECF00C82665 /* HealthManager.swift */; };
+		B8A0FDF92C3C1ECF00C82665 /* HealthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A0FDF82C3C1ECF00C82665 /* HealthStore.swift */; };
 		B8A0FDFB2C3C1EE600C82665 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A0FDFA2C3C1EE600C82665 /* Friend.swift */; };
 		B8E59B162C40F22400DDE026 /* GroupScrollBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E59B152C40F22400DDE026 /* GroupScrollBar.swift */; };
 		B8E59B492C41225400DDE026 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8E59B402C41225400DDE026 /* Inter-Black.ttf */; };
@@ -33,6 +33,11 @@
 		B8E59B4F2C41225400DDE026 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8E59B462C41225400DDE026 /* Inter-Regular.ttf */; };
 		B8E59B502C41225400DDE026 /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8E59B472C41225400DDE026 /* Inter-ExtraLight.ttf */; };
 		B8E59B512C41225400DDE026 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8E59B482C41225400DDE026 /* Inter-Bold.ttf */; };
+		B8E59B542C424A2A00DDE026 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E59B532C424A2A00DDE026 /* CustomTabBar.swift */; };
+		B8E59B562C42C74C00DDE026 /* BlurBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E59B552C42C74C00DDE026 /* BlurBar.swift */; };
+		B8E59B5B2C42D1E700DDE026 /* Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E59B5A2C42D1E700DDE026 /* Step.swift */; };
+		B8E59B5D2C43852000DDE026 /* TempStepsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E59B5C2C43852000DDE026 /* TempStepsListView.swift */; };
+		B8E59B602C4385E500DDE026 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E59B5F2C4385E500DDE026 /* Helper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +75,7 @@
 		B8A0FDF22C3C1E6A00C82665 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		B8A0FDF42C3C1E8B00C82665 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		B8A0FDF62C3C1EAA00C82665 /* GameHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHeaderView.swift; sourceTree = "<group>"; };
-		B8A0FDF82C3C1ECF00C82665 /* HealthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
+		B8A0FDF82C3C1ECF00C82665 /* HealthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthStore.swift; sourceTree = "<group>"; };
 		B8A0FDFA2C3C1EE600C82665 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		B8A0FDFC2C3C200700C82665 /* Strut.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strut.entitlements; sourceTree = "<group>"; };
 		B8E59B152C40F22400DDE026 /* GroupScrollBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupScrollBar.swift; sourceTree = "<group>"; };
@@ -84,6 +89,11 @@
 		B8E59B472C41225400DDE026 /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
 		B8E59B482C41225400DDE026 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
 		B8E59B522C41226C00DDE026 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B8E59B532C424A2A00DDE026 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		B8E59B552C42C74C00DDE026 /* BlurBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurBar.swift; sourceTree = "<group>"; };
+		B8E59B5A2C42D1E700DDE026 /* Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step.swift; sourceTree = "<group>"; };
+		B8E59B5C2C43852000DDE026 /* TempStepsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempStepsListView.swift; sourceTree = "<group>"; };
+		B8E59B5F2C4385E500DDE026 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,22 +145,15 @@
 			isa = PBXGroup;
 			children = (
 				B8E59B522C41226C00DDE026 /* Info.plist */,
-				B8E59B3F2C41223C00DDE026 /* Fonts */,
 				B8A0FDFC2C3C200700C82665 /* Strut.entitlements */,
-				B8A0FDC02C3C1D7A00C82665 /* StrutApp.swift */,
-				B8A0FDC22C3C1D7A00C82665 /* ContentView.swift */,
-				B8A0FDC42C3C1D7A00C82665 /* Item.swift */,
 				B8A0FDC62C3C1D7C00C82665 /* Assets.xcassets */,
+				B8A0FDC02C3C1D7A00C82665 /* StrutApp.swift */,
+				B8E59B3F2C41223C00DDE026 /* Fonts */,
+				B8E59B5E2C4385C600DDE026 /* Utilities */,
+				B8E59B582C42CA6200DDE026 /* Store */,
+				B8E59B592C42D1D000DDE026 /* Models */,
+				B8E59B572C42CA5A00DDE026 /* Views */,
 				B8A0FDC82C3C1D7C00C82665 /* Preview Content */,
-				B8A0FDEC2C3C1DE500C82665 /* HomeView.swift */,
-				B8A0FDEE2C3C1E1C00C82665 /* FullView.swift */,
-				B8A0FDF02C3C1E4700C82665 /* GroupView.swift */,
-				B8A0FDF22C3C1E6A00C82665 /* Group.swift */,
-				B8A0FDF42C3C1E8B00C82665 /* GameView.swift */,
-				B8A0FDF62C3C1EAA00C82665 /* GameHeaderView.swift */,
-				B8A0FDF82C3C1ECF00C82665 /* HealthManager.swift */,
-				B8A0FDFA2C3C1EE600C82665 /* Friend.swift */,
-				B8E59B152C40F22400DDE026 /* GroupScrollBar.swift */,
 			);
 			path = Strut;
 			sourceTree = "<group>";
@@ -194,6 +197,50 @@
 				B8E59B442C41225400DDE026 /* Inter-Thin.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		B8E59B572C42CA5A00DDE026 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B8A0FDEC2C3C1DE500C82665 /* HomeView.swift */,
+				B8E59B532C424A2A00DDE026 /* CustomTabBar.swift */,
+				B8A0FDF42C3C1E8B00C82665 /* GameView.swift */,
+				B8A0FDF62C3C1EAA00C82665 /* GameHeaderView.swift */,
+				B8E59B152C40F22400DDE026 /* GroupScrollBar.swift */,
+				B8A0FDEE2C3C1E1C00C82665 /* FullView.swift */,
+				B8A0FDF02C3C1E4700C82665 /* GroupView.swift */,
+				B8E59B552C42C74C00DDE026 /* BlurBar.swift */,
+				B8A0FDC22C3C1D7A00C82665 /* ContentView.swift */,
+				B8E59B5C2C43852000DDE026 /* TempStepsListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B8E59B582C42CA6200DDE026 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				B8A0FDF82C3C1ECF00C82665 /* HealthStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		B8E59B592C42D1D000DDE026 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B8E59B5A2C42D1E700DDE026 /* Step.swift */,
+				B8A0FDC42C3C1D7A00C82665 /* Item.swift */,
+				B8A0FDF22C3C1E6A00C82665 /* Group.swift */,
+				B8A0FDFA2C3C1EE600C82665 /* Friend.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B8E59B5E2C4385C600DDE026 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B8E59B5F2C4385E500DDE026 /* Helper.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,15 +384,20 @@
 			files = (
 				B8E59B162C40F22400DDE026 /* GroupScrollBar.swift in Sources */,
 				B8A0FDF32C3C1E6A00C82665 /* Group.swift in Sources */,
+				B8E59B5B2C42D1E700DDE026 /* Step.swift in Sources */,
 				B8A0FDC32C3C1D7A00C82665 /* ContentView.swift in Sources */,
+				B8E59B562C42C74C00DDE026 /* BlurBar.swift in Sources */,
+				B8E59B542C424A2A00DDE026 /* CustomTabBar.swift in Sources */,
 				B8A0FDED2C3C1DE500C82665 /* HomeView.swift in Sources */,
 				B8A0FDF12C3C1E4700C82665 /* GroupView.swift in Sources */,
+				B8E59B602C4385E500DDE026 /* Helper.swift in Sources */,
 				B8A0FDC52C3C1D7A00C82665 /* Item.swift in Sources */,
 				B8A0FDC12C3C1D7A00C82665 /* StrutApp.swift in Sources */,
 				B8A0FDF72C3C1EAA00C82665 /* GameHeaderView.swift in Sources */,
 				B8A0FDF52C3C1E8B00C82665 /* GameView.swift in Sources */,
 				B8A0FDEF2C3C1E1C00C82665 /* FullView.swift in Sources */,
-				B8A0FDF92C3C1ECF00C82665 /* HealthManager.swift in Sources */,
+				B8A0FDF92C3C1ECF00C82665 /* HealthStore.swift in Sources */,
+				B8E59B5D2C43852000DDE026 /* TempStepsListView.swift in Sources */,
 				B8A0FDFB2C3C1EE600C82665 /* Friend.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

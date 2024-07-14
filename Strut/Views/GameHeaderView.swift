@@ -24,8 +24,10 @@ struct GameHeaderView: View {
                     .renderingMode(.template)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.primary)
                 
+                // TODO: create new loading component for rounder bar
                 // ProgressView
                 ProgressView(value: progress)
                     .frame(width: 260)
@@ -37,7 +39,7 @@ struct GameHeaderView: View {
             
             GroupScrollBar(activeGroup: $activeGroup, groups: $groups)
         }
-        .padding(.top, 8)
+        .padding(.top, 15)
         .background(Color(.grey93))
     }
 }

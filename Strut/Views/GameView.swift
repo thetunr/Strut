@@ -9,11 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct GameView: View {
-    @EnvironmentObject var manager: HealthManager
     @Environment(\.modelContext) private var modelContext
 
+    let todaySteps: Step
     @State private var activeGroup: Int = -1
-    
     @State private var groups: [Group] = [
         Group(name: "Group 1", dateCreated: Date(), members: [Friend(user: "username1", name: "friend1", dateJoined: Date.now, dateAdded: Date.now)]),
         Group(name: "Group 2", dateCreated: Date(), members: [Friend(user: "username2", name: "friend2", dateJoined: Date.now, dateAdded: Date.now)]),
@@ -26,16 +25,11 @@ struct GameView: View {
         VStack(spacing:0) {
             GameHeaderView(activeGroup: $activeGroup, groups: $groups)
             
-            // Blur between GameHeaderView & FullView / GroupView
-            Rectangle()
-                .fill(LinearGradient(
-                    gradient: Gradient(colors: [Color(.grey80), Color(.grey87)]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                ))
-                .frame(height: 5)
+            // Blur between GameHeaderView & (FullView / GroupView)
+            BlurBar(topColor: .grey80, bottomColor: .grey87, height: 5)
             
             ZStack(alignment: .top) {
+                // Logic for FullView & GroupView
                 if (activeGroup == -1) {
                     FullView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -47,6 +41,7 @@ struct GameView: View {
                         .background(Color(.grey87))
                 }
                 
+                // Floating steps count component
                 ZStack {
                     // Container for steps count text
                     Rectangle()
@@ -57,20 +52,19 @@ struct GameView: View {
                         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
                     
                     // Steps count text
-                    Text("12,543")
-                        .font(.custom("Inter-Regular", size: 32))
+                    Text("\(todaySteps.count)")
+                        .font(.custom("Inter-Regular", size: 30))
                         .frame(width: 130, height: 32)
                         .foregroundColor(.black)
+                    
+                    
                 }
-                .padding(.top, 10) // Move
+                .padding(.top, 10) // Move step count down
             }
-            
-            Spacer()
-
         }
     }
 }
 
 #Preview {
-    GameView()
+    GameView(todaySteps: Step(count: 0, date: Date()))
 }
