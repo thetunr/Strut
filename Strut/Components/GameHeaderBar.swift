@@ -1,5 +1,5 @@
 //
-//  GroupHeaderView.swift
+//  GroupHeaderBar.swift
 //  Strut
 //
 //  Created by Tony Oh on 7/8/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GameHeaderView: View {
+struct GroupHeaderBar: View {
 
     @Binding var activeGroup: Int
     @Binding var groups: [Group]
@@ -31,7 +31,7 @@ struct GameHeaderView: View {
                 // ProgressView
                 ProgressView(value: progress)
                     .frame(width: 260)
-                    .tint(Color(.grey71))
+                    .tint(Color(.blue3))
                     .scaleEffect(x: 1, y: 2.5, anchor: .center)
                 
                 Spacer()
@@ -40,10 +40,6 @@ struct GameHeaderView: View {
             GroupScrollBar(activeGroup: $activeGroup, groups: $groups)
         }
         .padding(.top, 15)
-        .background(Color(.grey93))
+        .background(Color(.blue1))
     }
 }
-
-//#Preview {
-//    GameHeaderView()
-//}

@@ -12,16 +12,18 @@ struct GroupView: View {
     
     var body: some View {
         VStack {
-            Text("Emoji: \(group.emoji)")
-            Text("\(group.name) view")
-            Text("First friend in group is \(group.members[0].name).")
+            VStack {
+                Text("Emoji: \(group.emoji)")
+                Text("\(group.name) view")
+                List(group.members) { member in
+                    Text("\(member.name)")
+                }
+                .listStyle(.plain)
+            }
+            .frame(height: 300)
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.grey87))
     }
-}
-
-#Preview {
-    GroupView(
-        group: Group(name: "Group 1", dateCreated: Date(), members: [Friend(user: "username1", name: "friend1", dateJoined: Date.now, dateAdded: Date.now)])
-    )
 }

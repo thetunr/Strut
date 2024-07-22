@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+//import AuthenticationServices
+import Firebase
+//import CryptoKit
 
 struct TempStepsListView: View {
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    
+    
+    
     let steps: [Step]
-    let healthStore: HealthStore
     let refreshSteps: () async -> Void
     
     var body: some View {
@@ -30,7 +36,7 @@ struct TempStepsListView: View {
             
             RoundedRectangle(cornerRadius: 15)
                 .fill(.grey87)
-                .stroke(.grey71, lineWidth: 1)
+                .stroke(.grey4, lineWidth: 1)
                 .padding(10)
                 .foregroundColor(.black)
                 .frame(width: 100, height: 50)
@@ -41,11 +47,35 @@ struct TempStepsListView: View {
                         }
                     }, label: {
                         Text("Refresh")
-                            .foregroundColor(.black.opacity(0.75))
+                            .foregroundColor(.primary.opacity(0.75))
                     })
                 )
-                
             
+            Spacer(minLength: 30)
+            
+            RoundedRectangle(cornerRadius: 15)
+                .fill(.grey87)
+                .stroke(.grey4, lineWidth: 1)
+                .padding(10)
+                .foregroundColor(.black)
+                .frame(width: 100, height: 50)
+                .overlay(
+                    Button(action: {
+                        Task {
+                            do {
+                                try Auth.auth().signOut()
+                                isLoggedIn = false
+                                print("Log out")
+                            }
+                            catch {
+                                print(error)
+                            }
+                        }
+                    }, label: {
+                        Text("Log out")
+                            .foregroundColor(.primary.opacity(0.75))
+                    })
+                )
             
             Spacer(minLength: 30)
         }

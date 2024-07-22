@@ -11,7 +11,7 @@ struct CustomTabBar: View {
     @Binding var activeTab: Int
     
     var body: some View {
-        HStack(spacing: 50) {
+        HStack(spacing: 45) {
             Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
             
             Button(action: {
@@ -22,7 +22,8 @@ struct CustomTabBar: View {
                     .resizable()
                     .frame(width: 24, height: 22)
             }
-            .foregroundColor(Color.black.opacity(activeTab == 1 ? 1 : 0.5))
+            .padding(10) // increase area of access
+            .foregroundColor(activeTab == 1 ? .blue4 : .grey1)
             
             Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
             
@@ -33,10 +34,9 @@ struct CustomTabBar: View {
                     .renderingMode(.template)
                     .resizable()
                     .frame(width: 24, height: 24)
-
             }
-            .foregroundColor(Color.black.opacity(activeTab == 2 ? 1 : 0.5))
-            
+            .padding(10)
+            .foregroundColor(activeTab == 2 ? .blue4 : .grey1)
             Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
             
             Button(action: {
@@ -47,12 +47,13 @@ struct CustomTabBar: View {
                     .resizable()
                     .frame(width: 24, height: 24)
             }
-            .foregroundColor(Color.black.opacity(activeTab == 3 ? 1 : 0.5))
+            .padding(10)
+            .foregroundColor(activeTab == 3 ? .blue4 : .grey1)
             
             Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
         }
-        .padding(.top, 15) // top padding of CustomTabBar
-        .background(.grey93)
+        .padding(EdgeInsets(top: 10, leading: 0, bottom: 15, trailing: 0))
+        .background(.blue1)
     }
 }
 

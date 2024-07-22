@@ -58,11 +58,7 @@ class HealthStore {
         
         guard let startDate = startDate else { return }
         
-        print("\nCalendar:")
-        print("• The current calendar is \(Calendar.current).")
-        print("• The current calendar’s time zone is \(Calendar.current.timeZone).")
-        print("• The starting Date is \(startDate.formatted(date: .complete, time: .complete)).")
-        print("• The ending Date is \(endDate.formatted(date: .complete, time: .complete)).")
+        print("Fetched step data from \(startDate.formatted(date: .abbreviated, time: .complete)) to \(endDate.formatted(date: .abbreviated, time: .complete)).")
         
         stepsCount.enumerateStatistics(from: startDate, to: endDate) { statistics, stop in
             let count = statistics.sumQuantity()?.doubleValue(for: .count())
@@ -91,25 +87,6 @@ class HealthStore {
             lastError = error
         }
     }
-    
-    
-    
-    
-    
-    
-//    func fetchSteps() {
-//        let steps = HKQuantityType(.stepCount)
-//        let predicate = HKQuery.predicateForSamples(withStart: .startOfDay, end: Date())
-//        let query = HKStatisticsQuery(quantityType: steps, quantitySamplePredicate: predicate) {_, stats, error in
-//            guard let quantity = stats?.sumQuantity(), error == nil else {
-//                print("error fetching steps data")
-//                return
-//            }
-//            let stepCount = quantity.doubleValue(for: .count())
-//            print(stepCount)
-//        }
-//        healthStore.execute(query)
-//    }
     
 }
 

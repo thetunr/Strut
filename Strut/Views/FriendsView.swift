@@ -1,22 +1,18 @@
 //
-//  FullView.swift
+//  FriendsView.swift
 //  Strut
 //
-//  Created by Tony Oh on 7/8/24.
+//  Created by Tony Oh on 7/15/24.
 //
 
 import SwiftUI
 
-struct FullView: View {
+struct FriendsView: View {
     var body: some View {
         VStack {
-            Text("Full View")
+            Text("")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.grey87))
     }
-}
-
-#Preview {
-    FullView()
 }

@@ -9,19 +9,14 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-//struct Friend {
-//    let user: String // fetch character, date joined / added, total steps through id
-//    let name: String
-//    let nickname: String
-//}
-
+// TODO: figure out how to do this with group and friend
 //@Model
-class Friend {
+class Friend: Identifiable {
     let user: String
     let name: String
     let dateJoined: Date
     let dateAdded: Date
-    @State var nickname: String?
+    var nickname: String?
 
     init(user: String, name: String, dateJoined: Date, dateAdded: Date) {
         self.user = user

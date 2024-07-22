@@ -17,10 +17,10 @@ class Group {
     @State var emoji: String
     @State var members: [Friend]
 
-    init(name: String, dateCreated: Date, members: [Friend] ) {
+    init(dateCreated: Date, name: String, emoji: String, members: [Friend] ) {
         self.name = name
         self.dateCreated = dateCreated
-        self.emoji = "😶‍🌫️"
+        self.emoji = emoji
         self.members = members
     }
     
