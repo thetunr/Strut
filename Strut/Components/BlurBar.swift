@@ -11,18 +11,16 @@ struct BlurBar: View {
     let topColor: Color
     let bottomColor: Color
     let height: CGFloat
-    
+
     var body: some View {
         Rectangle()
-            .fill(LinearGradient(
-                gradient: Gradient(colors: [topColor, bottomColor]),
-                startPoint: .top,
-                endPoint: .bottom
-            ))
+            .fill(
+                LinearGradient(
+                    gradient: Gradient(colors: [topColor, bottomColor]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .frame(height: height)
     }
-}
-
-#Preview {
-    BlurBar(topColor: .grey87, bottomColor: .grey80, height: 5)
 }

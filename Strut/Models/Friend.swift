@@ -10,12 +10,12 @@ import SwiftData
 import SwiftUI
 
 // TODO: figure out how to do this with group and friend
-//@Model
+@Model
 class Friend: Identifiable {
-    let user: String
-    let name: String
-    let dateJoined: Date
-    let dateAdded: Date
+    var user: String
+    var name: String
+    var dateJoined: Date
+    var dateAdded: Date
     var nickname: String?
 
     init(user: String, name: String, dateJoined: Date, dateAdded: Date) {
@@ -24,9 +24,5 @@ class Friend: Identifiable {
         self.nickname = Optional.none
         self.dateJoined = dateJoined
         self.dateAdded = dateAdded
-    }
-    
-    func changeNickname(newNickname: String?) {
-        self.nickname = newNickname
     }
 }

@@ -5,21 +5,19 @@
 //  Created by Tony Oh on 7/14/24.
 //
 
-import SwiftUI
 //import AuthenticationServices
 import Firebase
+import SwiftUI
+
 //import CryptoKit
 
 struct TempStepsListView: View {
-    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
-    
-    
-    
+    @Environment(AuthViewModel.self) var viewModel: AuthViewModel
     let steps: [Step]
     let refreshSteps: () async -> Void
-    
+
     var body: some View {
-        
+
         VStack {
             List(steps) { step in
                 HStack {
@@ -32,8 +30,7 @@ struct TempStepsListView: View {
                 }
             }
             .listStyle(.plain)
-            
-            
+
             RoundedRectangle(cornerRadius: 15)
                 .fill(.grey87)
                 .stroke(.grey4, lineWidth: 1)
@@ -41,18 +38,20 @@ struct TempStepsListView: View {
                 .foregroundColor(.black)
                 .frame(width: 100, height: 50)
                 .overlay(
-                    Button(action: {
-                        Task {
-                            await self.refreshSteps()
-                        }
-                    }, label: {
-                        Text("Refresh")
-                            .foregroundColor(.primary.opacity(0.75))
-                    })
+                    Button(
+                        action: {
+                            Task {
+                                await self.refreshSteps()
+                            }
+                        },
+                        label: {
+                            Text("Refresh")
+                                .foregroundColor(.primary.opacity(0.75))
+                        })
                 )
-            
+
             Spacer(minLength: 30)
-            
+
             RoundedRectangle(cornerRadius: 15)
                 .fill(.grey87)
                 .stroke(.grey4, lineWidth: 1)
@@ -60,23 +59,16 @@ struct TempStepsListView: View {
                 .foregroundColor(.black)
                 .frame(width: 100, height: 50)
                 .overlay(
-                    Button(action: {
-                        Task {
-                            do {
-                                try Auth.auth().signOut()
-                                isLoggedIn = false
-                                print("Log out")
-                            }
-                            catch {
-                                print(error)
-                            }
-                        }
-                    }, label: {
-                        Text("Log out")
-                            .foregroundColor(.primary.opacity(0.75))
-                    })
+                    Button(
+                        action: {
+                            viewModel.signOut()
+                        },
+                        label: {
+                            Text("Log out")
+                                .foregroundColor(Color.primary.opacity(0.75))
+                        })
                 )
-            
+
             Spacer(minLength: 30)
         }
         .onAppear {
