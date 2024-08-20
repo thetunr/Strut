@@ -5,31 +5,18 @@
 //  Created by Tony Oh on 7/8/24.
 //
 
+import SwiftData
 import SwiftUI
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AuthViewModel.self) var viewModel: AuthViewModel
-
     @State private var healthStore = HealthStore()
 
-    private var steps: [Step] {
-        healthStore.steps.sorted { lhs, rhs in
-            lhs.date > rhs.date
-        }
-    }
-
+    @Query(sort: \NewStep.dateString, order: .reverse) var newSteps: [NewStep]
     @State private var activeTab: Int = 1
 
-    @State private var friends: [Friend] = [
-        Friend(user: "username1", name: "friend1", dateJoined: Date(), dateAdded: Date()),
-        Friend(user: "username2", name: "friend2", dateJoined: Date(), dateAdded: Date()),
-        Friend(user: "username3", name: "friend3", dateJoined: Date(), dateAdded: Date()),
-        Friend(user: "username4", name: "friend4", dateJoined: Date(), dateAdded: Date()),
-        Friend(user: "username5", name: "friend5", dateJoined: Date(), dateAdded: Date()),
-        Friend(user: "username6", name: "friend6", dateJoined: Date(), dateAdded: Date()),
-    ]
-
+    @Query private var friends: [Friend]
     @State private var friendGroups: [FriendGroup] = [
         FriendGroup(
             dateCreated: Date(), name: "Group 1", emoji: "😶‍🌫️",
@@ -51,23 +38,19 @@ struct HomeView: View {
             ]),
     ]
 
-    init() {
-
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             // Logic for different tabs
             if activeTab == 1 {
                 GameView(
-                    todaySteps: self.steps.first ?? Step(count: 0, date: Date()),
+                    todaySteps: newSteps.first?.count ?? 0,
                     refreshSteps: self.refreshSteps,
                     friendGroups: $friendGroups)  // TODO: not the best solution with optionals
             } else if activeTab == 2 {
                 FriendsView()
                 // ContentView()
             } else if activeTab == 3 {
-                TempStepsListView(steps: self.steps, refreshSteps: self.refreshSteps)
+                TempStepsListView(refreshSteps: self.refreshSteps)
                     .environment(viewModel)
 
             }
@@ -78,17 +61,32 @@ struct HomeView: View {
         }
         .task {
             await healthStore.requestAuthorization()
-            await refreshSteps()
+            await refreshSteps(numDays: 7)
         }
     }
 
-    func refreshSteps() async {
+    @MainActor
+    func refreshSteps(numDays: Int) async {
         Task {
+            healthStore.steps = []
             do {
-                healthStore.steps = []
-                try await healthStore.fetchSteps()
+                //                try modelContext.delete(model: NewStep.self)
+                //                try modelContext.save()
+                try await healthStore.fetchSteps(numDays: 7)
             } catch {
                 print(error)
+            }
+
+            let id = viewModel.user?.uid ?? ""
+            print(id)
+
+            for newStep in newSteps {
+                modelContext.delete(newStep)
+            }
+
+            for step in healthStore.steps {
+                let newStep = NewStep(date: step.date, userID: id, count: step.count)
+                modelContext.insert(newStep)
             }
         }
     }

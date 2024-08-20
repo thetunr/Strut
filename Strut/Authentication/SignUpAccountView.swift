@@ -1,24 +1,25 @@
 //
-//  SignUpSecondView.swift
+//  SignUpAccountView.swift
 //  Strut
 //
-//  Created by Tony Oh on 7/28/24.
+//  Created by Tony Oh on 7/21/24.
 //
 
 import SwiftUI
 
-enum SignUpSecondFocusedField: Hashable {
-    case firstName, lastName, birthday
+enum SignUpAccountFocusedField: Hashable {
+    case username, email, password, confirmPassword
 }
 
-struct SignUpSecondView: View {
+struct SignUpAccountView: View {
+    @Environment(AuthViewModel.self) var viewModel: AuthViewModel
     @Environment(\.dismiss) var dismiss
 
-    @FocusState var focus: SignUpSecondFocusedField?
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
+    @FocusState var focus: SignUpAccountFocusedField?
 
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         NavigationView {
             VStack(spacing: 0) {
                 Text("Create an Account")
@@ -31,9 +32,9 @@ struct SignUpSecondView: View {
                     .frame(width: 200)
                     .padding(.bottom, 20)
 
-                // Name VStack
+                // Account VStack
                 VStack(spacing: 0) {
-                    Text("Name")
+                    Text("Account")
                         .font(.custom("Inter-Medium", size: 16))
                         .foregroundColor(Color.grey6)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -41,11 +42,14 @@ struct SignUpSecondView: View {
                         .padding(.bottom, 6)
 
                     ZStack(alignment: .init(horizontal: .leading, vertical: .top)) {
-                        TextField("", text: $firstName)
-                            .focused($focus, equals: .firstName)
+                        TextField("", text: $viewModel.signUpUsername)
+                            .focused($focus, equals: .username)
                             .authTextField()
+                            .onSubmit {
+                                self.focus = .email
+                            }
 
-                        Text("first")
+                        Text("username")
                             .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0))
                             .foregroundColor(Color.grey5)
                     }
@@ -53,11 +57,14 @@ struct SignUpSecondView: View {
                     .padding(.bottom, 10)
 
                     ZStack(alignment: .init(horizontal: .leading, vertical: .top)) {
-                        TextField("", text: $lastName)
-                            .focused($focus, equals: .lastName)
+                        TextField("", text: $viewModel.signUpEmail)
+                            .focused($focus, equals: .email)
                             .authTextField()
+                            .onSubmit {
+                                self.focus = .password
+                            }
 
-                        Text("last")
+                        Text("email")
                             .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0))
                             .foregroundColor(Color.grey5)
                     }
@@ -66,20 +73,48 @@ struct SignUpSecondView: View {
                 }
                 .padding(.bottom, 10)
 
-                // Birthday VStack
+                // Password VStack
                 VStack(spacing: 0) {
-                    Text("Birthday")
+                    Text("Password")
+                        .font(.custom("Inter-Medium", size: 16))
+                        .foregroundColor(Color.grey6)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, 6)
+                        .onSubmit {
+                            self.focus = .confirmPassword
+                        }
+
+                    ZStack(alignment: .init(horizontal: .leading, vertical: .top)) {
+                        SecureField("", text: $viewModel.signUpPassword)
+                            .focused($focus, equals: .password)
+                            .authTextField()
+                            .frame(height: 35)
+
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 10)
+                }
+                .padding(.bottom, 10)
+
+                // Confirm Password VStack
+                VStack(spacing: 0) {
+                    Text("Confirm Password")
                         .font(.custom("Inter-Medium", size: 16))
                         .foregroundColor(Color.grey6)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 10)
                         .padding(.bottom, 6)
 
-                    // Birthday component
-
+                    ZStack(alignment: .init(horizontal: .leading, vertical: .top)) {
+                        SecureField("", text: $viewModel.signUpConfirmPassword)
+                            .focused($focus, equals: .confirmPassword)
+                            .authTextField()
+                            .frame(height: 35)
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 10)
                 }
-                .padding(.horizontal, 10)
-                .padding(.bottom, 10)
 
                 // Back and Next buttons HStack
                 HStack {
@@ -105,7 +140,8 @@ struct SignUpSecondView: View {
 
                     // Next button
                     NavigationLink(
-                        destination: SignUpSecondView()
+                        destination: SignUpUserView()
+                            .environment(viewModel)
                     ) {
                         Text("next")
                             .font(.system(size: 16))
@@ -129,5 +165,5 @@ struct SignUpSecondView: View {
 }
 
 #Preview {
-    SignUpSecondView()
+    SignUpAccountView()
 }

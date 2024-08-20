@@ -18,8 +18,8 @@ struct LandingView: View {
         if launching {
             LaunchView()
                 .onAppear {
-                    // TODO: temporary 1.5 second delay for LaunchView
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    // TODO: temporary 0.5 second delay for LaunchView
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         launching = false
                     }
                 }
@@ -27,20 +27,20 @@ struct LandingView: View {
             VStack {
                 switch viewModel.authenticationState {
                 case .unauthenticated:
-                    LoginView()
+                    AuthenticationView()
                         .environment(viewModel)
-                        .transition(.slide)
-                        .onAppear {
-                            UITextField.appearance().clearButtonMode = .whileEditing
-                        }
+                //                        .transition(.blurReplace())
                 case .authenticating:
                     LaunchView()
-                        .transition(.blurReplace())
+                //                        .transition(.blurReplace())
                 case .authenticated:
                     HomeView()
                         .environment(viewModel)
-                        .transition(.slide)
+                //                        .transition(.blurReplace())
                 }
+            }
+            .onAppear {
+                UITextField.appearance().clearButtonMode = .whileEditing
             }
             .animation(.default, value: viewModel.authenticationState)
         }

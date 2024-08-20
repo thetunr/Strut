@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct Step: Identifiable {
-    let id = UUID()
+struct Step {
     let count: Int
     let date: Date
 }

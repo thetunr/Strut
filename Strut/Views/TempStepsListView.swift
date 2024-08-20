@@ -7,26 +7,42 @@
 
 //import AuthenticationServices
 import Firebase
+import SwiftData
 import SwiftUI
 
 //import CryptoKit
 
 struct TempStepsListView: View {
     @Environment(AuthViewModel.self) var viewModel: AuthViewModel
-    let steps: [Step]
-    let refreshSteps: () async -> Void
+    //    let steps: [Step]
+    @Query(sort: \NewStep.dateString, order: .reverse) var newSteps: [NewStep]
+    let refreshSteps: (Int) async -> Void
 
     var body: some View {
-
         VStack {
-            List(steps) { step in
+            //            List(steps) { step in
+            //                HStack {
+            //                    Circle()
+            //                        .frame(width: 10, height: 10)
+            //                        .foregroundColor(step.count < 10000 ? .red : .green)
+            //                    Text("\(step.count)")
+            //                    Spacer()
+            //                    Text(step.date.formatted(date: .abbreviated, time: .complete))
+            //                }
+            //            }
+            //            .listStyle(.plain)
+            //
+            //            Spacer()
+
+            List(newSteps) { newStep in
                 HStack {
                     Circle()
                         .frame(width: 10, height: 10)
-                        .foregroundColor(step.count < 10000 ? .red : .green)
-                    Text("\(step.count)")
+                        .foregroundColor(newStep.count < 10000 ? .red : .green)
+                    Text("\(newStep.count)")
                     Spacer()
-                    Text(step.date.formatted(date: .abbreviated, time: .complete))
+                    //                    Text(newStep.date.formatted(date: .abbreviated, time: .complete))
+                    Text(newStep.dateString)
                 }
             }
             .listStyle(.plain)
@@ -41,7 +57,7 @@ struct TempStepsListView: View {
                     Button(
                         action: {
                             Task {
-                                await self.refreshSteps()
+                                await self.refreshSteps(7)
                             }
                         },
                         label: {
@@ -73,7 +89,7 @@ struct TempStepsListView: View {
         }
         .onAppear {
             Task {
-                await self.refreshSteps()
+                await self.refreshSteps(7)
             }
         }
     }

@@ -9,43 +9,30 @@ import Foundation
 import HealthKit
 import Observation
 import SwiftData
-
-extension Date {
-    static var startOfDay: Date {
-        Calendar.current.startOfDay(for: Date())
-    }
-}
-
-enum HealthError: Error {
-    case healthDataNotAvailable
-}
+import SwiftUI
 
 @Observable
 class HealthStore {
     var steps: [Step] = []
     var healthStore: HKHealthStore?
-    var lastError: Error?
 
     init() {
         if HKHealthStore.isHealthDataAvailable() {
             healthStore = HKHealthStore()
-        } else {
-            lastError = HealthError.healthDataNotAvailable
         }
     }
 
-    func fetchSteps() async throws {
+    @MainActor
+    func fetchSteps(numDays: Int) async throws {
         guard let healthStore = self.healthStore else { return }
 
         let calendar = Calendar(identifier: .gregorian)
 
-        // endDate calculation
         guard let tomorrowDate = calendar.date(byAdding: .day, value: 1, to: Date()) else { return }
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: tomorrowDate)
         guard let endDate = calendar.date(from: dateComponents) else { return }
 
-        // startDate calculation
-        let startDate = calendar.date(byAdding: .day, value: -7, to: endDate)
+        let startDate = calendar.date(byAdding: .day, value: -numDays, to: endDate)
 
         let stepType = HKQuantityType(.stepCount)
         let everyDay = DateComponents(day: 1)
@@ -75,20 +62,19 @@ class HealthStore {
     }
 
     func requestAuthorization() async {
-        //        guard let stepType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) else { return }
-
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
-
         let healthTypes: Set = [stepType]
-
         guard let healthStore = self.healthStore else { return }
-
         do {
             try await healthStore.requestAuthorization(toShare: [], read: healthTypes)
         } catch {
             print("error fetching health data")
-            lastError = error
         }
     }
+}
 
+extension Date {
+    static var startOfDay: Date {
+        Calendar.current.startOfDay(for: Date())
+    }
 }

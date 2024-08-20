@@ -17,18 +17,13 @@ enum AuthenticationState {
     case authenticated
 }
 
-enum AuthenticationFlow {
-    case login
-    case signUp
-}
-
-@Observable
 @MainActor
+@Observable
 class AuthViewModel {
-    @ObservationIgnored @Environment(\.modelContext) private var modelContext  // TODO: test later
+    //    @ObservationIgnored @Environment(\.modelContext) private var modelContext  // TODO: test later
 
-    var loginEmail = ""
-    var loginPassword = ""
+    var signInEmail = ""
+    var signInPassword = ""
 
     var signUpUsername = ""
     var signUpEmail = ""
@@ -41,22 +36,12 @@ class AuthViewModel {
     var authenticationState: AuthenticationState = .unauthenticated
     var user: User?
 
-    var flow: AuthenticationFlow = .login
-    var isValid = false
+    //    var isValid = false
     var errorMessage = ""
     var displayName = ""
 
     init() {
         registerAuthStateHandler()
-
-        //        $flow
-        //            .combineLatest($email, $password, $confirmPassword)
-        //            .map { flow, email, password, confirmPassword in
-        //                flow == .login
-        //                    ? !(email.isEmpty || password.isEmpty)
-        //                    : !(email.isEmpty || password.isEmpty || confirmPassword.isEmpty)
-        //            }
-        //            .assign(to: &$isValid)
     }
 
     private var authStateHandler: AuthStateDidChangeListenerHandle?
@@ -71,9 +56,23 @@ class AuthViewModel {
         }
     }
 
+    func reset() {
+        self.signInEmail = ""
+        self.signInPassword = ""
+
+        self.signUpUsername = ""
+        self.signUpEmail = ""
+        self.signUpPassword = ""
+        self.signUpConfirmPassword = ""
+
+        self.signUpFirstName = ""
+        self.signUpLastName = ""
+    }
+
     func signOut() {
         do {
             try Auth.auth().signOut()
+            print("signed out")
         } catch {
             print(error)
             errorMessage = error.localizedDescription
@@ -126,13 +125,13 @@ extension AuthViewModel {
         switch result {
         case .success(let authorization):
             self.authenticationState = .authenticating
-            loginAppleWithFirebase(authorization)
+            signInAppleWithFirebase(authorization)
         case .failure(let error):
             print(error.localizedDescription)
         }
     }
 
-    func loginAppleWithFirebase(_ authorization: ASAuthorization) {
+    func signInAppleWithFirebase(_ authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
                 // fatalError("Invalid state: A login callback was received, but no login request was sent.")
@@ -140,7 +139,6 @@ extension AuthViewModel {
                     "Invalid state: A login callback was received, but no login request was sent.")
                 return
             }
-
             guard let appleIDToken = appleIDCredential.identityToken else {
                 print("Unable to fetch identity token")
                 return
@@ -166,6 +164,7 @@ extension AuthViewModel {
                 }
                 // User is signed in to Firebase with Apple.
                 self.authenticationState = .authenticated
+                self.reset()
                 print("Authenticated")
             }
         }
@@ -178,5 +177,46 @@ extension AuthViewModel {
 // Email and password sign in
 extension AuthViewModel {
     // Functions for email and password sign in extension
+    func signInWithEmailPassword() async -> Bool {
+        do {
+            let authResult = try await Auth.auth().signIn(
+                withEmail: self.signInEmail, password: self.signInPassword)
+            user = authResult.user
+            print("User \(authResult.user.uid) signed in")
+            self.reset()
+            return true
+        } catch {
+            print(error)
+            errorMessage = error.localizedDescription
+            authenticationState = .unauthenticated
+            return false
+        }
+    }
 
+    func signUpWithEmailPassword() async -> Bool {
+        authenticationState = .authenticating
+        do {
+            let authResult = try await Auth.auth().createUser(
+                withEmail: self.signUpEmail, password: self.signUpPassword)
+            user = authResult.user
+            print("User \(authResult.user.uid) signed up")
+            self.reset()
+            return true
+        } catch {
+            print(error)
+            errorMessage = error.localizedDescription
+            authenticationState = .unauthenticated
+            return false
+        }
+    }
+
+    func deleteAccount() async -> Bool {
+        do {
+            try await user?.delete()
+            return true
+        } catch {
+            errorMessage = error.localizedDescription
+            return false
+        }
+    }
 }
