@@ -29,7 +29,7 @@ struct StrutApp: App {
         let schema = Schema([
             Item.self,
             Friend.self,
-            NewStep.self,
+            Step.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

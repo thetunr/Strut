@@ -9,6 +9,9 @@ import AuthenticationServices
 import CryptoKit
 import Firebase
 import SwiftUI
+import SwiftUIIntrospect
+
+//import SwiftUIIntrospect
 
 enum SignInFocusedField: Hashable {
     case email, password
@@ -24,8 +27,6 @@ struct AuthenticationView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     @FocusState var focus: SignInFocusedField?
-
-    @State private var emailApproved: Bool = false
 
     var body: some View {
         @Bindable var viewModel = viewModel
@@ -46,15 +47,7 @@ struct AuthenticationView: View {
                     ZStack(alignment: .init(horizontal: .leading, vertical: .top)) {
                         TextField("", text: $viewModel.signInEmail)
                             .onSubmit {
-                                Task {
-                                    if !self.emailApproved {
-                                        withAnimation {
-                                            self.emailApproved.toggle()
-                                        }
-                                    }
-                                }
                                 self.focus = .password
-
                             }
                             .focused($focus, equals: .email)
                             .submitLabel(.next)
@@ -68,59 +61,40 @@ struct AuthenticationView: View {
                     .padding(.bottom, 6)
 
                     // Password secure text field
-                    if self.emailApproved {
-                        ZStack(alignment: .init(horizontal: .leading, vertical: .top)) {
-                            SecureField("", text: $viewModel.signInPassword)
-                                .focused($focus, equals: .password)
-                                .authTextField()
+                    ZStack(alignment: .init(horizontal: .leading, vertical: .top)) {
+                        SecureField("", text: $viewModel.signInPassword)
+                            .focused($focus, equals: .password)
+                            .authTextField()
 
-                            Text("password")
-                                .padding(
-                                    EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0)
-                                )
-                                .foregroundColor(Color.grey5)
-                        }
-                        .animation(.easeInOut(duration: 0), value: self.emailApproved)
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 6)
+                        Text("password")
+                            .padding(
+                                EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0)
+                            )
+                            .foregroundColor(Color.grey5)
                     }
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 6)
 
                     // Continue / sign in button
                     Button(
                         action: {
-                            if !self.emailApproved {
-                                withAnimation {
-                                    self.focus = .password
-                                    self.emailApproved.toggle()
+                            Task {
+                                self.focus = .none
+                                print("starting sign in?????")
+                                if await viewModel.signInWithEmailPassword() {
+                                    print("should've successfully signed in?????")
                                 }
-                            } else {
-                                Task {
-                                    self.focus = .none
-                                    print("starting sign in?????")
-                                    if await viewModel.signInWithEmailPassword() {
-                                        print("should've successfully signed in?????")
-                                    }
-                                    print("attempted sign in?????")
-                                }
+                                print("attempted sign in?????")
                             }
                         },
                         label: {
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(Color.blue5)
-                                .animation(.linear(duration: 0.2), value: self.emailApproved)
                                 .frame(width: 200, height: 40)
                                 .overlay {
-                                    Group {
-                                        if !self.emailApproved {
-                                            Text("continue")
-                                        } else {
-                                            Text("sign in")
-
-                                        }
-                                    }
-                                    .animation(.easeInOut(duration: 0.1), value: self.emailApproved)
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.white)
+                                    Text("sign in")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.white)
                                 }
                         }
                     )
@@ -130,47 +104,31 @@ struct AuthenticationView: View {
                     OrDivider()
 
                     // Sign in with Apple button
-                    if !self.emailApproved {
-                        SignInWithAppleButton(
-                            .signIn,
-                            onRequest: { request in
-                                viewModel.handleSignInWithAppleRequest(request)
-                            },
-                            onCompletion: { result in
-                                viewModel.handleSignInWithAppleCompletion(result)
-                            }
-                        )
-                        .frame(width: 220, height: 40)
-                        .cornerRadius(14)
-                        .padding(10)
-                        .signInWithAppleButtonStyle(.white)
-                        //                        .signInWithAppleButtonStyle(colorScheme == .light ? .black : .white)
-                        // TODO: bug when toggling dark mode
-                    }
+
+                    SignInWithAppleButton(
+                        .signIn,
+                        onRequest: { request in
+                            viewModel.handleSignInWithAppleRequest(request)
+                        },
+                        onCompletion: { result in
+                            viewModel.handleSignInWithAppleCompletion(result)
+                        }
+                    )
+                    .frame(width: 220, height: 40)
+                    .cornerRadius(14)
+                    .padding(10)
+                    .signInWithAppleButtonStyle(.white)
+                    //                        .signInWithAppleButtonStyle(colorScheme == .light ? .black : .white)
+                    // TODO: bug when toggling dark mode
 
                     // Underlined text: create new account / other sign in options
                     Group {
-                        if !self.emailApproved {
-                            NavigationLink(
-                                destination: SignUpAccountView()
-                                    .environment(viewModel)
-                            ) {
-                                Text("create new account")
-                                    .underline()
-                            }
-                        } else {
-                            Button(
-                                action: {
-                                    withAnimation(.easeOut(duration: 0.1)) {
-                                        self.emailApproved.toggle()
-                                        viewModel.signInPassword = ""
-                                    }
-                                },
-                                label: {
-                                    Text("other sign in options")
-                                        .underline()
-                                }
-                            )
+                        NavigationLink(
+                            destination: SignUpAccountView()
+                                .environment(viewModel)
+                        ) {
+                            Text("create new account")
+                                .underline()
                         }
                     }
                     .foregroundColor(Color.grey5)

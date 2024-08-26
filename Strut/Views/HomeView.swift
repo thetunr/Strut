@@ -13,7 +13,7 @@ struct HomeView: View {
     @Environment(AuthViewModel.self) var viewModel: AuthViewModel
     @State private var healthStore = HealthStore()
 
-    @Query(sort: \NewStep.dateString, order: .reverse) var newSteps: [NewStep]
+    @Query(sort: \Step.dateString, order: .reverse) var steps: [Step]
     @State private var activeTab: Int = 1
 
     @Query private var friends: [Friend]
@@ -43,7 +43,7 @@ struct HomeView: View {
             // Logic for different tabs
             if activeTab == 1 {
                 GameView(
-                    todaySteps: newSteps.first?.count ?? 0,
+                    todaySteps: steps.first?.count ?? 0,
                     refreshSteps: self.refreshSteps,
                     friendGroups: $friendGroups)  // TODO: not the best solution with optionals
             } else if activeTab == 2 {
@@ -68,25 +68,22 @@ struct HomeView: View {
     @MainActor
     func refreshSteps(numDays: Int) async {
         Task {
-            healthStore.steps = []
-            do {
-                //                try modelContext.delete(model: NewStep.self)
-                //                try modelContext.save()
-                try await healthStore.fetchSteps(numDays: 7)
-            } catch {
-                print(error)
+            Task {
+                healthStore.healthKitSteps = []
+                do {
+                    try await healthStore.fetchSteps(numDays: 7)
+                } catch {
+                    print(error)
+                }
             }
 
-            let id = viewModel.user?.uid ?? ""
-            print(id)
+            Task {
+                let id = viewModel.user?.uid ?? ""
 
-            for newStep in newSteps {
-                modelContext.delete(newStep)
-            }
-
-            for step in healthStore.steps {
-                let newStep = NewStep(date: step.date, userID: id, count: step.count)
-                modelContext.insert(newStep)
+                for step in healthStore.healthKitSteps {
+                    let step = Step(date: step.date, userID: id, count: step.count)
+                    modelContext.insert(step)
+                }
             }
         }
     }

@@ -13,7 +13,7 @@ import SwiftUI
 
 @Observable
 class HealthStore {
-    var steps: [Step] = []
+    var healthKitSteps: [HealthKitStep] = []
     var healthStore: HKHealthStore?
 
     init() {
@@ -53,9 +53,10 @@ class HealthStore {
 
         stepsCount.enumerateStatistics(from: startDate, to: endDate) { statistics, stop in
             let count = statistics.sumQuantity()?.doubleValue(for: .count())
-            let step = Step(count: Int(count ?? 0), date: statistics.startDate)
-            if step.date != endDate {
-                self.steps.append(step)
+            let healthKitStep = HealthKitStep(count: Int(count ?? -1), date: statistics.startDate)
+
+            if healthKitStep.date != endDate {
+                self.healthKitSteps.append(healthKitStep)
             }
         }
 
@@ -71,6 +72,11 @@ class HealthStore {
             print("error fetching health data")
         }
     }
+}
+
+struct HealthKitStep {
+    let count: Int
+    let date: Date
 }
 
 extension Date {

@@ -19,7 +19,7 @@ struct LandingView: View {
             LaunchView()
                 .onAppear {
                     // TODO: temporary 0.5 second delay for LaunchView
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         launching = false
                     }
                 }

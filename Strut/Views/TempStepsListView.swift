@@ -15,7 +15,7 @@ import SwiftUI
 struct TempStepsListView: View {
     @Environment(AuthViewModel.self) var viewModel: AuthViewModel
     //    let steps: [Step]
-    @Query(sort: \NewStep.dateString, order: .reverse) var newSteps: [NewStep]
+    @Query(sort: \Step.dateString, order: .reverse) var steps: [Step]
     let refreshSteps: (Int) async -> Void
 
     var body: some View {
@@ -34,15 +34,15 @@ struct TempStepsListView: View {
             //
             //            Spacer()
 
-            List(newSteps) { newStep in
+            List(steps) { step in
                 HStack {
                     Circle()
                         .frame(width: 10, height: 10)
-                        .foregroundColor(newStep.count < 10000 ? .red : .green)
-                    Text("\(newStep.count)")
+                        .foregroundColor(step.count < 10000 ? .red : .green)
+                    Text("\(step.count)")
                     Spacer()
                     //                    Text(newStep.date.formatted(date: .abbreviated, time: .complete))
-                    Text(newStep.dateString)
+                    Text(step.dateString)
                 }
             }
             .listStyle(.plain)
